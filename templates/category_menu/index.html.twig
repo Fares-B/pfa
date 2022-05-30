@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ controller_name }}{% endblock %}
+
+{% block body %}
+
+  {{ include('./base/sidebar.html.twig') }}
+
+  <div class="example-wrapper flex-1 px-4 py-4">
+
+    <div class="flex justify-between py-4">
+      <div class="flex items-center">
+        <div class="w-6 h-6 mr-1">
+          {{ heroicon('view-boards', '', 'outline') }}
+        </div>
+        <h1 class="text-2xl">{{ controller_name }}</h1>
+      </div>
+
+      <!--Modal Add-->
+      {{ include('./base/modal.html.twig', {
+        title: "Ajouter une catégorie ingrédient",
+        form: form
+      }) }}
+
+    </div>
+
+    <!-- ====== Table Start -->
+    <table class="table-auto w-full">
+      <thead>
+      <tr class="bg-primary text-center">
+        <th
+          class="
+           w-1/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           border-l border-transparent
+           "
+        >
+          ID
+        </th>
+        <th
+          class="
+           w-4/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+          Nom
+        </th>
+        <th
+          class="
+           max-w-10
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+{#          Modifier#}
+        </th>
+        <th
+          class="
+           max-w-10
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+{#          Supprimer#}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for key, categoryMenu in categoryMenus %}
+        {% set bgAndBorderClass = key % 2 == 0 ? "bg-[#F3F6FF] border-[#E8E8E8]" : "bg-white border-[#E8E8E8]" %}
+        <tr>
+          <td
+            class="
+             text-center text-dark
+             font-medium
+             text-base
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            {{ categoryMenu.id }}
+          </td>
+          <td
+            class="
+             text-center text-dark
+             font-medium
+             text-base
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            {{ categoryMenu.name }}
+          </td>
+          <td
+            class="
+             py-5
+             px-4
+             border-b border-l
+             {{ bgAndBorderClass }}
+            "
+          >
+            <div class="w-6 h-6 cursor-pointer">
+              <a href="{{ path("app_category_menu_edit", {id: categoryMenu.id}) }}">
+                {{ heroicon('pencil', '', 'outline') }}
+              </a>
+            </div>
+          </td>
+          <td
+            class="
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            <div class="w-6 h-6 cursor-pointer">
+              <a href="{{ path("app_category_menu_remove", {id: categoryMenu.id}) }}">
+                {{ heroicon('trash', 'text-danger', 'outline') }}
+              </a>
+            </div>
+          </td>
+
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% if categoryMenus|length == 0 %}
+      <div class="text-center text-lg pt-12">
+        Pas de categorie de menu
+      </div>
+    {% endif %}
+    <!-- ====== Table Section End -->
+  </div>
+{% endblock %}

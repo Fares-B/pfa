@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -35,6 +37,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Establishment::class, mappedBy="user")
+     */
+    private $establishments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CategoryIngredient::class, mappedBy="user")
+     */
+    private $categoryIngredients;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CategoryMenu::class, mappedBy="user")
+     */
+    private $categoryMenus;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $siret;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    public function __construct()
+    {
+        $this->establishments = new ArrayCollection();
+        $this->categoryIngredients = new ArrayCollection();
+        $this->categoryMenus = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -123,5 +162,160 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Establishment>
+     */
+    public function getEstablishments(): Collection
+    {
+        return $this->establishments;
+    }
+
+    public function addEstablishment(Establishment $establishment): self
+    {
+        if (!$this->establishments->contains($establishment)) {
+            $this->establishments[] = $establishment;
+            $establishment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEstablishment(Establishment $establishment): self
+    {
+        if ($this->establishments->removeElement($establishment)) {
+            // set the owning side to null (unless already changed)
+            if ($establishment->getUser() === $this) {
+                $establishment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    /**
+     * @return Collection<int, Table>
+     */
+    public function getTables(): Collection
+    {
+        $tables = new ArrayCollection();
+        foreach ($this->establishments as $establishment) {
+            foreach ($establishment->getTables() as $table) {
+                $tables->add($table);
+            }
+        }
+
+        return $tables;
+    }
+
+    /**
+     * @return Collection<int, CategoryIngredient>
+     */
+    public function getCategoryIngredients(): Collection
+    {
+        return $this->categoryIngredients;
+    }
+
+    public function addCategoryIngredient(CategoryIngredient $categoryIngredient): self
+    {
+        if (!$this->categoryIngredients->contains($categoryIngredient)) {
+            $this->categoryIngredients[] = $categoryIngredient;
+            $categoryIngredient->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategoryIngredient(CategoryIngredient $categoryIngredient): self
+    {
+        if ($this->categoryIngredients->removeElement($categoryIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($categoryIngredient->getUser() === $this) {
+                $categoryIngredient->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        $ingredients = new ArrayCollection();
+        foreach ($this->categoryIngredients as $categoryIngredient) {
+            foreach ($categoryIngredient->getIngredients() as $ingredient) {
+                $ingredients->add($ingredient);
+            }
+        }
+        return $ingredients;
+    }
+
+    /**
+     * @return Collection<int, CategoryMenu>
+     */
+    public function getCategoryMenus(): Collection
+    {
+        return $this->categoryMenus;
+    }
+
+    public function addCategoryMenu(CategoryMenu $categoryMenu): self
+    {
+        if (!$this->categoryMenus->contains($categoryMenu)) {
+            $this->categoryMenus[] = $categoryMenu;
+            $categoryMenu->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategoryMenu(CategoryMenu $categoryMenu): self
+    {
+        if ($this->categoryMenus->removeElement($categoryMenu)) {
+            // set the owning side to null (unless already changed)
+            if ($categoryMenu->getUser() === $this) {
+                $categoryMenu->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
     }
 }

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ controller_name }}{% endblock %}
+
+{% block body %}
+
+    {{ include('./base/sidebar.html.twig') }}
+
+    <div class="example-wrapper flex-1 py-4">
+
+
+        <div class="flex justify-between p-4">
+            <h1 class="text-2xl">{{ controller_name }}</h1>
+        </div>
+
+        <div class="flex justify-center w-100 pt-8">
+            <div class="w-8/12 p-5 rounded-md ">
+
+                <div class="flex flex-col w-full h-auto">
+                    <!-- Header -->
+                    <div class="flex w-full h-auto items-center">
+                        {#                    <div class="flex w-10/12 h-auto py-3 justify-center items-center text-2xl font-bold">#}
+                        {#                        {{ title }}#}
+                        {#                    </div>#}
+
+                        <div class="w-6 h-6 cursor-pointer">
+                            <a href="{{ path("app_category_ingredient") }}" >
+                                {{ heroicon('arrow-left', '', 'outline') }}
+                            </a>
+                        </div>
+                        <!--Header End-->
+                    </div>
+                    <!-- Modal Content-->
+
+                    <div class="px-16">
+                        {{ form_start(form, {'method': 'POST'}) }}
+                        <div class="text-danger">
+                            {{ form_errors(form) }}
+                        </div>
+
+                        {{ form_rest(form) }}
+
+                        <div class="flex justify-evenly">
+                            <a
+                              href="{{ path("app_category_ingredient") }}"
+                              class="bg-gray-100 hover:bg-gray-300 text-gray font-bold py-2 px-4 rounded cursor-pointer"
+                            >
+                                Annuler
+                            </a>
+                            <button class="bg-green-700 hover:bg-green-800 hover:text-white text-white font-bold py-2 px-4 rounded">
+                                Editer
+                            </button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                    <!-- End of Modal Content-->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+

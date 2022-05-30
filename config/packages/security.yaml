@@ -36,7 +36,16 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/dashboard, roles: ROLE_USER }
+         - { path: ^/users, roles: ROLE_ADMIN }
+
+         - { path: ^/account, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/establishment, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/dashboard, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/tables, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/ingredient, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/category_ingredient, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/menu, roles: ROLE_ESTABLISHMENT }
+         - { path: ^/category_menu, roles: ROLE_ESTABLISHMENT }
 
 when@test:
     security:

@@ -1,0 +1,224 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ controller_name }}{% endblock %}
+
+{% block body %}
+
+  {% set establishmentName = "" %}
+
+  {{ include('./base/sidebar.html.twig') }}
+
+  <div class="example-wrapper flex-1 px-4 py-4">
+
+    <div class="flex justify-between py-4">
+      <div class="flex items-center">
+        <div class="w-6 h-6 mr-1">
+          {{ heroicon('template', '', 'outline') }}
+        </div>
+        <h1 class="text-2xl">{{ controller_name }}</h1>
+      </div>
+
+      {% if(establismentName) %}
+        <h5 class="text-lg">{{ establismentName }}</h5>
+      {% endif %}
+
+      <!--Modal Add-->
+      {{ include('./base/modal.html.twig', {
+        title: "Ajouter une table",
+        form: form
+      }) }}
+
+    </div>
+
+    <!-- ====== Table Start -->
+    <table class="table-auto w-full">
+      <thead>
+      <tr class="bg-primary text-center">
+        <th
+          class="
+           w-1/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           border-l border-transparent
+           "
+        >
+          Numéro
+        </th>
+        <th
+          class="
+           w-3/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+          Etablissement
+        </th>
+        <th
+          class="
+           w-2/6
+           min-w-[160px]
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+          Id établissement
+        </th>
+        <th
+          class="
+           max-w-10
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+          Tables
+        </th>
+        <th
+          class="
+           max-w-10
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+{#          Modifier#}
+        </th>
+        <th
+          class="
+           max-w-10
+           text-lg
+           font-semibold
+           text-white
+           py-4
+           lg:py-7
+           px-3
+           lg:px-4
+           "
+        >
+{#          Supprimer#}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for key, table in tables %}
+        {% set bgAndBorderClass = key % 2 == 0 ? "bg-[#F3F6FF] border-[#E8E8E8]" : "bg-white border-[#E8E8E8]" %}
+
+          {% if(establishmentName != table.establishment.name) %}
+            {% set establishmentName = table.establishment.name %}
+            <tr
+              class="py-5 px-2 text-center text-dark text-lg font-medium"
+            >
+              <td class="bg-sky-200 h-5"></td>
+              <td class="bg-sky-200"></td>
+              <td class="bg-sky-200"></td>
+              <td class="bg-sky-200"></td>
+              <td class="bg-sky-200"></td>
+            </tr>
+          {% endif %}
+
+        <tr>
+          <td
+            class="
+             text-center text-dark
+             font-medium
+             text-base
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            {{ table.number }}
+          </td>
+          <td
+            class="
+             text-center text-dark
+             font-medium
+             text-base
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            {{ table.establishment.name }}
+          </td>
+          <td
+            class="
+             text-center text-dark
+             font-medium
+             text-base
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            {{ table.establishment.id }}
+          </td>
+          <td
+            class="
+             py-5
+             px-4
+             border-b border-l
+             {{ bgAndBorderClass }}
+            "
+          >
+            <div class="w-6 h-6 cursor-pointer">
+              <a href="{{ path("app_table_edit", {id: table.id}) }}">
+                {{ heroicon('pencil', '', 'outline') }}
+              </a>
+            </div>
+          </td>
+          <td
+            class="
+             py-5
+             px-2
+             border-b border-l
+             {{ bgAndBorderClass }}
+             "
+          >
+            <div class="w-6 h-6 cursor-pointer">
+              <a href="{{ path("app_table_remove", {id: table.id}) }}">
+                {{ heroicon('trash', 'text-danger', 'outline') }}
+              </a>
+            </div>
+          </td>
+
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% if tables|length == 0 %}
+      <div class="text-center text-lg pt-12">
+        Pas de table
+      </div>
+    {% endif %}
+    <!-- ====== Table Section End -->
+  </div>
+{% endblock %}
