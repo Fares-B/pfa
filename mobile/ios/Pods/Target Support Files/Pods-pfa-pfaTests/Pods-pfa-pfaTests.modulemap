@@ -1,0 +1,6 @@
+module Pods_pfa_pfaTests {
+  umbrella header "Pods-pfa-pfaTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

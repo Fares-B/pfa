@@ -1,0 +1,6 @@
+module Pods_pfa {
+  umbrella header "Pods-pfa-umbrella.h"
+
+  export *
+  module * { export * }
+}
