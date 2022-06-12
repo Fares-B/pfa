@@ -13,7 +13,7 @@ const PrivateLayout: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={{ headerShown: false, tabBarShowLabel: false }}
-      initialRouteName="Home"
+      initialRouteName="HomeLayout"
     >
       {privateRoutes.map(route => (
         <Tab.Screen

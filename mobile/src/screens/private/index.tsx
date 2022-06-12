@@ -1,10 +1,10 @@
-import Home from "./Home";
+import HomeLayout from "./Home";
 import Profile from "./Profile";
 import Cart from "./Cart";
 import { faCartShopping, faHome, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default {
-  Home,
+  HomeLayout,
   Profile,
   Cart,
 };
@@ -16,8 +16,8 @@ export const privateRoutes = [
     icon: faCartShopping,
   },
   {
-    name: "Home",
-    components: Home,
+    name: "HomeLayout",
+    components: HomeLayout,
     icon: faHome,
   },
   {
