@@ -204,7 +204,7 @@
              "
           >
             <div class="w-6 h-6 cursor-pointer">
-              <a href="{{ path("app_table_remove", {id: table.id}) }}">
+              <a class="remove" data-label="cette table ?" data-path="{{ path("app_table_remove", {id: table.id}) }}">
                 {{ heroicon('trash', 'text-danger', 'outline') }}
               </a>
             </div>

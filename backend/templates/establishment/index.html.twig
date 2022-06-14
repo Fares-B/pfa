@@ -171,7 +171,7 @@
              "
           >
             <div class="w-6 h-6 cursor-pointer">
-              <a href="{{ path("app_establishment_remove", {id: establishment.id}) }}">
+              <a class="remove" data-label="cette établissement ?" data-path="{{ path("app_establishment_remove", {id: establishment.id}) }}" >
                 {{ heroicon('trash', 'text-danger', 'outline') }}
               </a>
             </div>

@@ -6,6 +6,7 @@ use App\Repository\IngredientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
@@ -21,6 +22,7 @@ class Ingredient
 
     /**
      * @ORM\ManyToOne(targetEntity=CategoryIngredient::class, inversedBy="ingredients")
+     * @Ignore
      */
     private $category;
 
@@ -31,6 +33,7 @@ class Ingredient
 
     /**
      * @ORM\ManyToMany(targetEntity=Menu::class, mappedBy="ingredients")
+     * @Ignore
      */
     private $menus;
 

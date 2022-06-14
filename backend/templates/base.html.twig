@@ -42,5 +42,15 @@
                 });
             }
         </script>
+        <script>
+            document.querySelectorAll('.remove').forEach(function(element) {
+                element.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Voulez-vous vraiment supprimer ' + this.dataset.label)) {
+                    window.location.href = this.dataset.path;
+                }
+                });
+            });
+        </script>
     </body>
 </html>

@@ -59,7 +59,7 @@ class UserController extends AbstractController
             // send email with email and password
             $email = new \Swift_Message('Test email');
             $email->setFrom('admin@zetcode.com');
-            $email->setTo('killua9307@gmail.com');
+            $email->setTo($user->getEmail());
             $email->setBody(
                 $this->renderView(
                     'email/userCreated.html.twig',

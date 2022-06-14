@@ -142,7 +142,7 @@
              "
           >
             <div class="w-6 h-6 cursor-pointer">
-              <a href="{{ path("app_category_menu_remove", {id: categoryMenu.id}) }}">
+              <a class="remove" data-label="cette catégorie de menu ?" data-path="{{ path("app_category_menu_remove", {id: categoryMenu.id}) }}">
                 {{ heroicon('trash', 'text-danger', 'outline') }}
               </a>
             </div>

@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\TableRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Ignore;
+
 
 /**
  * @ORM\Entity(repositoryClass=TableRepository::class)
  * @ORM\Table(name="`table`")
+ * @ApiResource()
  */
 class Table
 {
@@ -25,6 +29,7 @@ class Table
 
     /**
      * @ORM\ManyToOne(targetEntity=Establishment::class, inversedBy="tables")
+     * @Ignore
      */
     private $establishment;
 
