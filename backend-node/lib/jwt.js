@@ -5,6 +5,7 @@ exports.createToken = (user) => {
     id: user.id,
     email: user.email,
     role: user.role,
+    userType: user.userType,
   };
   const options = {
     expiresIn: "1d",

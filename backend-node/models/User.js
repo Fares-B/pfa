@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
+const { USER_TYPE } = require("./type");
 
 const UserSchema = mongoose.Schema({
     firstName: {
@@ -11,6 +12,7 @@ const UserSchema = mongoose.Schema({
         required: true,
     },
     role: String,
+    userType: { type: String, enum: Object.values(USER_TYPE), default: USER_TYPE },
     email: {
         type: String,
         required: true,

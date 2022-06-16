@@ -14,10 +14,11 @@ module.exports = {
     },
     post: async (req, res) => {
         const {menus: menusParams} = req.body;
-        const { company = null } = req.query;
-        
-        if (!company) return res.sendStatus(400);
 
+        const { user = null, company = null, table = null } = req.query;
+        console.log(req.query);        
+        if (!user || !company || !table) return res.sendStatus(400);
+        console.log("passed");
         let supplements = [];
         let menus = [];
         for (const m of menusParams) {
@@ -33,7 +34,7 @@ module.exports = {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     api_key: process.env.SYMFONY_API_KEY,
-                    company,
+                    user,
                     menus,
                     supplements,
                 })
@@ -52,6 +53,11 @@ module.exports = {
             const order = new OrderModel({
                 user: req.user.id,
                 ...req.body,
+                company: {
+                    establishment: company,
+                    user,
+                    table,
+                },
                 totalPrice: menusTotal + supplementsTotal,
             });
             await order.save();

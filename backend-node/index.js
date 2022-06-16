@@ -34,7 +34,7 @@ app.use(
 app.use(
   "/menus",
   require("./middlewares/authentication"),
-  require("./routes/symfony/Menu")
+  require("./routes/Menu")
 );
 
 app.use(

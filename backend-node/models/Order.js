@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ORDER_STATUS } = require("./type");
 
 const IngredientSchema = new mongoose.Schema({
     id: { type: Number, required: true },
@@ -26,7 +27,18 @@ const OrderSchema = mongoose.Schema({
         required: true,
     },
     menus: [MenuSchema],
+
+    company: {
+        establishment: { type: Number, required: true },
+        table: { type: Number, required: true },
+        user: { type: Number, required: true },
+    },
     totalPrice: Number,
+    status: {
+        type: String,
+        enum: Object.values(ORDER_STATUS),
+        default: ORDER_STATUS.NEW,
+    },
     deleted: { type: Boolean, default: false },
 });
 
