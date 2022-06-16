@@ -61,6 +61,17 @@ class IngredientRepository extends ServiceEntityRepository
             ;
     }
 
+     /**
+     * @return Ingredient[] Returns an array Menu
+     */
+    public function findIngredientsIn($ids) {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     /*
     public function findOneBySomeField($value): ?Ingredient
     {

@@ -62,6 +62,18 @@ class MenuRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return Menu[] Returns an array Menu
+     */
+    public function findMenusIn($ids) {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Menu[] Returns an array of Menu objects
     //  */

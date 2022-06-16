@@ -31,5 +31,17 @@ app.use(
   require("./routes/Order")
 );
 
+app.use(
+  "/menus",
+  require("./middlewares/authentication"),
+  require("./routes/symfony/Menu")
+);
+
+app.use(
+  "/ingredients",
+  require("./middlewares/authentication"),
+  require("./routes/symfony/Ingredient")
+);
+
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

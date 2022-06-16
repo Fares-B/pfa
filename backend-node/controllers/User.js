@@ -36,7 +36,8 @@ module.exports = {
   put: async (req, res) => {
     try {
       let isUpdatePassword = false;
-      if(req.body.password) { isUpdatePassword = true }
+      if(req.body.password) { isUpdatePassword = true };
+
       let user = await UserModel.findOne({
         _id: mongoose.Types.ObjectId(req.params.id),
         deleted: false,

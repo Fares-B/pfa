@@ -10,6 +10,10 @@ const IngredientSchema = new mongoose.Schema({
 const MenuSchema = new mongoose.Schema({
     id: { type: Number, required: true },
     name: { type: String, required: true },
+    category: {
+        id: Number,
+        name: String,
+    },
     price: { type: Number, required: true },
     ingredients: [IngredientSchema],
     supplements: [IngredientSchema],

@@ -2,7 +2,6 @@
 const Router = require("express").Router;
 const OrderController = require("../controllers/Order");
 const { authorization } = require("../middlewares");
-const { OrderModel } = require("../models");
 
 const router = new Router();
 

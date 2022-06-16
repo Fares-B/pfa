@@ -34,6 +34,11 @@ class Ingredient
      */
     private $menus;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $price;
+
     public function __construct()
     {
         $this->menus = new ArrayCollection();
@@ -91,6 +96,18 @@ class Ingredient
         if ($this->menus->removeElement($menu)) {
             $menu->removeIngredient($this);
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }
