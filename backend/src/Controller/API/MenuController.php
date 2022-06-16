@@ -33,7 +33,7 @@ class MenuController extends AbstractController
         // get user's category menus
         $repo = $manager->getRepository(CategoryMenu::class);
 
-        $categoryMenus = $repo->findBy([ 'user' => $data['company'] ]);
+        $categoryMenus = $repo->findBy([ 'user' => $data['user'] ]);
 
         if(!$categoryMenus){
             return new JsonResponse(['message' => 'No category menus'], 400);
