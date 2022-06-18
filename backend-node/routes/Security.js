@@ -7,7 +7,7 @@ const router = new Router();
 
 router.post("/login", async (req, res) => {
   try {
-    const user = await UserModel.findOne({ email: req.body.email, deleted: false });
+    const user = await UserModel.findOne({ email: req.body.email, userType: req.userType, deleted: false });
 
     if (user && (await bcrypt.compare(req.body.password, user.password))) {
       const token = createToken(user);

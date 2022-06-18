@@ -12,11 +12,15 @@ const UserSchema = mongoose.Schema({
         required: true,
     },
     role: String,
-    userType: { type: String, enum: Object.values(USER_TYPE), default: USER_TYPE },
+    userType: { type: String, enum: Object.values(USER_TYPE), default: USER_TYPE.CLIENT },
     email: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
+    },
+    company: {
+        establishment: Number,
+        user: Number,
     },
     // need password crypted
     password: {
@@ -46,8 +50,12 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
+// automatically add createdAt and updatedAt
 UserSchema.set("timestamps", true);
 
-var UserModel = mongoose.model('users', UserSchema);
+// user have uniq email and userType
+UserSchema.index({ email: 1, userType: 1 }, { unique: true });
+
+const UserModel = mongoose.model('users', UserSchema);
 
 module.exports = UserModel;

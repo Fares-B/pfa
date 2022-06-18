@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 module.exports = (options = {}) => async (req, res, next) => {
     if (options.role) {
@@ -11,12 +11,18 @@ module.exports = (options = {}) => async (req, res, next) => {
         //     }
         // }
     }
-    if(options.owner) {
-        // if user is not owner of the resource, return 403
-        // but if user is admin, then allow access
-        if (!options.role || options.role !== 'admin') {
+    // if it's client or establishment user
+    if(options.userType) {
+        if (req.user.userType !== options.userType) {
             return res.sendStatus(403)
         }
     }
+    // if(options.owner) {
+    //     // if user is not owner of the resource, return 403
+    //     // but if user is admin, then allow access
+    //     if (!options.role || options.role !== 'admin') {
+    //         return res.sendStatus(403)
+    //     }
+    // }
     next();
 }

@@ -27,7 +27,6 @@ const OrderSchema = mongoose.Schema({
         required: true,
     },
     menus: [MenuSchema],
-
     company: {
         establishment: { type: Number, required: true },
         table: { type: Number, required: true },

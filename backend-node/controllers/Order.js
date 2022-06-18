@@ -1,6 +1,7 @@
 // controller for order
 const mongoose = require("mongoose");
 const { OrderModel } = require('../models');
+const { ORDER_STATUS } = require("../models/type");
 const { SYMFONY_API_URL } = process.env;
 
 module.exports = {
@@ -62,13 +63,6 @@ module.exports = {
             });
             await order.save();
             res.status(201).json(order);
-
-            // res.json({
-            //     menusTotal,
-            //     supplementsTotal,
-            //     total: menusTotal + supplementsTotal,
-            //     menu,
-            // });
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
@@ -108,6 +102,7 @@ module.exports = {
         try {
             let order = await OrderModel.findOne({
                 _id: mongoose.Types.ObjectId(req.params.id),
+                status: ORDER_STATUS.NEW,
                 deleted: false,
             });
             if (!order) return res.sendStatus(404);

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { UserModel } = require('../models');
+const { USER_TYPE } = require("../models/type");
 
 module.exports = {
   cget: async (req, res) => {
@@ -13,7 +14,7 @@ module.exports = {
 
   post: async (req, res) => {
     try {
-      const user = new UserModel({ ...req.body });
+      const user = new UserModel({ ...req.body, userType: req.userType });
       await user.save({ newPassword: true });
       res.status(201).json(user);
     } catch (err) {
@@ -25,6 +26,7 @@ module.exports = {
     try {
       const user = await UserModel.findOne({
         _id: mongoose.Types.ObjectId(req.params.id),
+        userType: req.user.userType,
         deleted: false,
       });
       res.json(user);
@@ -40,6 +42,7 @@ module.exports = {
 
       let user = await UserModel.findOne({
         _id: mongoose.Types.ObjectId(req.params.id),
+        userType: req.user.userType,
         deleted: false,
       });
       if(user === null) throw new Error('User not found');
@@ -55,6 +58,7 @@ module.exports = {
     try {
       const user = await UserModel.findOne({
         _id: mongoose.Types.ObjectId(req.params.id),
+        userType: req.user.userType,
         deleted: false,
       });
       if (user === null) throw new Error('User not found');

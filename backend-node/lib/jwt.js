@@ -1,11 +1,14 @@
 const jwt = require("jsonwebtoken");
 
 exports.createToken = (user) => {
+  const establishment = user.company ? { establishment: user.company.establishment } : {};
+
   const payload = {
     id: user.id,
     email: user.email,
     role: user.role,
     userType: user.userType,
+    ...establishment,
   };
   const options = {
     expiresIn: "1d",

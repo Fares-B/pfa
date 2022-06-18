@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 const express = require('express');
+const { USER_TYPE } = require('./models/type');
 
 require('./lib/db');
 
@@ -17,13 +18,11 @@ app.get('/', (req, res) => {
   res.json('Hello World');
 });
 
-app.use("/", require("./routes/Security"));
-
-app.use(
-  "/users",
-  require("./middlewares/authentication"),
-  require("./routes/User")
-);
+// CLIENT
+app.use("/", function(req, res, next) {
+  req.userType = USER_TYPE.CLIENT;
+  next();
+}, require("./routes/Security"));
 
 app.use(
   "/orders",
@@ -31,16 +30,30 @@ app.use(
   require("./routes/Order")
 );
 
+
+// ESTABLISHMENT
+app.use("/establishment", function (req, res, next) {
+  req.userType = USER_TYPE.ESTABLISTMENT;
+  next();
+}, require("./routes/Security"));
+
 app.use(
-  "/menus",
+  "/establishment/menus",
   require("./middlewares/authentication"),
   require("./routes/Menu")
 );
 
+// app.use(
+//   "/ingredients",
+//   require("./middlewares/authentication"),
+//   require("./routes/symfony/Ingredient")
+// );
+
+// ALL
 app.use(
-  "/ingredients",
+  "/users",
   require("./middlewares/authentication"),
-  require("./routes/symfony/Ingredient")
+  require("./routes/User")
 );
 
 app.listen(PORT, HOST);
