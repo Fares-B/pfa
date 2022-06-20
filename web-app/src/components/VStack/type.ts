@@ -7,6 +7,8 @@ export interface VStackProps {
   w?: string;
   h?: string;
 
+  flex?: number | string;
+
   m?: number | string;
   mt?: number | string;
   mr?: number | string;

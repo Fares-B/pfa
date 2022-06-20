@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
-const VStackStyled = styled.div`
-  display: flex;
-  flex-direction: column;
+const GridStyled = styled.div`
+  display: grid;
+  grid-template-columns: repeat(${props => props.cols || "1"}, 1fr);  
+  grid-auto-rows: minmax(100px, 250px);
+  grid-gap: ${props => props.space || "2"}px;
+
   ${props => props.flex ? "flex-grow: " + props.flex + ";" : ""}
 
   ${props => props.h ? "height: " + props.h + ";" : ""}
@@ -10,7 +13,6 @@ const VStackStyled = styled.div`
 
   justify-content: ${props => props.justifyContent || "flex-start"};
   align-items: ${props => props.alignItems || "flex-start"};
-  gap: ${props => props.space || "2"}px;
 
   padding: ${props => {
     return (props.pt || props.p || "0") + "px " +
@@ -27,4 +29,4 @@ const VStackStyled = styled.div`
   }};
 `;
 
-export default VStackStyled;
+export default GridStyled;

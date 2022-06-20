@@ -5,8 +5,8 @@ const { ORDER_STATUS } = require("../models/type");
 function nextStatus(status) {
     switch (status) {
         case ORDER_STATUS.NEW:
-            return ORDER_STATUS.IN_PROGRESS;
-        case ORDER_STATUS.IN_PROGRESS:
+        //     return ORDER_STATUS.IN_PROGRESS;
+        // case ORDER_STATUS.IN_PROGRESS:
             return ORDER_STATUS.COMPLETED;
     }
     return null;

@@ -2,17 +2,18 @@
 require('dotenv').config();
 const express = require('express');
 const { USER_TYPE } = require('./models/type');
-
+const cors = require('cors');
 require('./lib/db');
 
 // Constants
-const PORT = 3000;
+const PORT = 5000;
 const HOST = '0.0.0.0';
 
 // App
 const app = express();
 
 app.use(express.json()); //Used to parse JSON bodies
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.json('Hello World');

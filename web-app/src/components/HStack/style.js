@@ -2,11 +2,15 @@ import styled from 'styled-components';
 
 const HStackStyled = styled.div`
   display: flex;
-  width: ${props => props.w || "100%"};
-  height: ${props => props.h || "100%"};
+  ${props => props.flex ? "flex-grow: " + props.flex + ";" : ""}
+
+  ${props => props.h ? "height: " + props.h + ";" : ""}
+  ${props => props.w ? "width: " + props.w + ";" : ""}
+
   justify-content: ${props => props.justifyContent || "flex-start"};
   align-items: ${props => props.alignItems || "flex-start"};
   gap: ${props => props.space || "2"}px;
+  
 
   padding: ${props => {
     return (props.pt || props.p || "0") + "px " +
