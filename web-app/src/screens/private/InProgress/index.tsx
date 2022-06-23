@@ -7,6 +7,7 @@ import Grid from "../../../components/Grid";
 import HStack from "../../../components/HStack";
 import Title from "../../../components/Title";
 import VStack from "../../../components/VStack";
+import { updateStatusRequest } from "../../../globals/fetch";
 
 import { Order } from "../../../globals/type";
 
@@ -17,22 +18,14 @@ interface Props {
 };
 
 
-export default function InProgress({ orders, setOrders, token }: Props): React.ReactElement {
+export default function InProgress({ orders, setOrders }: Props): React.ReactElement {
   
-  const onNextStatus = (id: number): void => {
-    fetch(process.env.BACKEND_BASE_URL || "http://localhost:5000" + "/establishment/menus/next-status/" + id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token,
-        },
-      })
-      .then(res => res.json())
-      .then(data => {
-        const newOrders = orders.filter(o => o._id !== id);
-        setOrders(newOrders);
-      })
-      .catch(err => console.log(err));
+  const onNextStatus = (id: string): void => {
+    updateStatusRequest(id).then(data => {
+      console.log("DATA UPDATED", data);
+      const newOrders = orders.filter(o => o._id !== id);
+      setOrders(newOrders);
+    });
   }
 
   return (

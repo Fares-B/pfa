@@ -21,7 +21,7 @@ interface Company {
 }
 
 export interface Order {
-    _id: number;
+    _id: string;
     company: Company;
     menus: Menu[];
     totalPrice: number;

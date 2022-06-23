@@ -19,6 +19,11 @@ const SideBar = ({ routes }: SideBarProps): React.ReactElement => {
             </Link>
           );
         })}
+        <a
+          href="/login"
+          style={{ textDecoration: "none" }}
+          onClick={() => localStorage.removeItem("token")}
+        >Déconnexion</a>
       </VStack>
     </VStack>
   );

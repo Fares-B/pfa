@@ -3,7 +3,8 @@ import routes from "../screens/routes";
 import { Routes, Route } from "react-router-dom";
 import HStack from "../components/HStack";
 import SideBar from "../components/SideBar";
-import { Menu, Order } from "../globals/type";
+import { Order } from "../globals/type";
+import { allOrdersRequest } from "../globals/fetch";
 
 interface Props {
   token: string;
@@ -13,16 +14,10 @@ export default function Private({ token }: Props): React.ReactElement {
   const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    fetch(process.env.BACKEND_BASE_URL || "http://localhost:5000" + "/establishment/menus", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token,
-      },
-    })
-    .then(res => res.json())
-    .then(data => setOrders(data))
-    .catch(err => console.log(err));
+    allOrdersRequest().then(data => {
+      console.log(data)
+      setOrders(data)
+    });
   }, []);
 
   function PrivateRoutes() {

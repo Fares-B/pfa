@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faImage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
-const Setting: React.FC<any> = ({ navigation, route }) => {
+const Setting: React.FC<any> = ({ navigation, route, setToken }) => {
   const { user } = route.params;
   const { isOpen, onOpen, onClose } = useDisclose();
 
@@ -66,7 +66,7 @@ const Setting: React.FC<any> = ({ navigation, route }) => {
       
       <VStack space={4} pl={4}>
         <Text fontSize={16} fontWeight={700}>Autres options</Text>
-        <Link onNavigateTo={() => navigation.navigate("Home")}>
+        <Link onNavigateTo={() => setToken(null)}>
           Déconnexion
         </Link>
       </VStack>

@@ -3,12 +3,14 @@ import { Platform } from "react-native";
 import { Button, KeyboardAvoidingView, Text, VStack } from "native-base";
 import C from "@app/components";
 import { Errors, ErrorsMessages } from "./type";
+import { loginRequest } from "@app/globals/fetch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ERRORS_MESSAGES: ErrorsMessages = {
   login: "Email ou mot de passe incorrect",
 };
 
-const Login: React.FC<any> = ({ navigation }) => {
+const Login: React.FC<any> = ({ navigation, setToken }) => {
   const [form, setForm] = useState({ email: "", password: ""});
   const [errors, setErrors] = useState<Errors>({ login: false });
 
@@ -23,8 +25,13 @@ const Login: React.FC<any> = ({ navigation }) => {
   }
 
   function onSubmit() {
-    addRemoveErrors("login", true);
-    console.log(form);
+    addRemoveErrors("login", false);
+    loginRequest({ email: form.email, password: form.password }).then( ({ token = null, message = null }) => {
+      if(message) addRemoveErrors("login", true);
+      else if (token) AsyncStorage.setItem("token", token, () => {
+        setToken(token);
+      });
+    });
   }
 
 
