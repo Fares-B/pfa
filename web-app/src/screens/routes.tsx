@@ -54,6 +54,13 @@ const routes: PropsRoute[] = [
     // exact: true,
   },
   {
+    path: "/profile",
+    element: Private.Profile,
+    title: "Mon compte",
+    layout: "private",
+    // exact: true,
+  },
+  {
     path: "/kitchen",
     element: Private.Kitchen,
     title: "En cuisine",

@@ -40,6 +40,8 @@ export const loginRequest = async (body: LoginProps) => query("/login", "POST", 
 // PRIVATE
 export const updateStatusRequest = async (id: string) => query("/menus/next-status/" + id, "PUT");
 
-export const allOrdersRequest = async () => query("/menus", "GET")
+export const allOrdersRequest = async () => query("/menus", "GET");
+
+export const profileRequest = async () => query("/profile/", "GET");
 
 export default query;

@@ -15,7 +15,6 @@ export default function Private({ token }: Props): React.ReactElement {
 
   useEffect(() => {
     allOrdersRequest().then(data => {
-      console.log(data)
       setOrders(data)
     });
   }, []);

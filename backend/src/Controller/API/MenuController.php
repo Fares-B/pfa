@@ -5,6 +5,8 @@ namespace App\Controller\API;
 use App\Entity\Menu;
 use App\Entity\Ingredient;
 use App\Entity\CategoryMenu;
+use App\Entity\Establishment;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,4 +119,42 @@ class MenuController extends AbstractController
         return new JsonResponse($menusWithPrices);
     }
 
+    /**
+     * @Route("/api/profile", name="app_api_profile")
+     */
+    public function getProfileCompany(Request $request, EntityManagerInterface $manager): Response
+    {
+        // get body content
+        $data = json_decode($request->getContent(), true);
+
+        if(!$data){
+            return new JsonResponse(['message' => 'No data'], 403);
+        }
+        if($data["api_key"] != "12345"){
+            return new JsonResponse(['message' => 'Invalid api key'], 403);
+        }
+        
+        $establishment = $manager->getRepository(Establishment::class)->find($data['company']);
+
+        if(!$establishment){
+            return new JsonResponse(['message' => 'No establishment'], 400);
+        }
+        $tables = [];
+        foreach ($establishment->getTables() as $table) {
+            array_push($tables, [
+                "id" => $table->getId(),
+                "number" => $table->getNumber()
+            ]);
+        }
+
+        $response = [
+            "establishment" => $establishment->getId(),
+            "name" => $establishment->getName(),
+            "user" => $establishment->getUser()->getId(),
+            "address" => $establishment->getAddress(),
+            "tables" => $tables,
+        ];
+
+        return new JsonResponse($response);
+    }
 }

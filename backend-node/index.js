@@ -44,6 +44,17 @@ app.use(
   require("./routes/Menu")
 );
 
+app.use(
+  "/establishment/qrcode/generate",
+  require("./middlewares/qrcode"),
+);
+
+app.use(
+  "/establishment/profile",
+  require("./middlewares/authentication"),
+  require("./routes/Profile")
+);
+
 // app.use(
 //   "/ingredients",
 //   require("./middlewares/authentication"),
