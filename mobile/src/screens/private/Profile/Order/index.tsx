@@ -6,7 +6,9 @@ const Order: React.FC<any> = ({ navigation }) => {
   return (
     <VStack flex={1} px={4} pt={4}>
       <Header navigation={navigation} />
-      <Text>Order</Text>
+      <Center flex={1}>
+        <Text fontSize={18}>Soon</Text>
+      </Center>
     </VStack>
   );
 };
