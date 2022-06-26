@@ -8,6 +8,7 @@ import HStack from "../../../components/HStack";
 import Title from "../../../components/Title";
 import VStack from "../../../components/VStack";
 import { profileRequest } from "../../../globals/fetch";
+import "../../../assets/style.css";
 
 type TableType = {
   id: number;
@@ -31,10 +32,13 @@ export default function Profile(): React.ReactElement {
     name: "",
     address: ""
   });
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
+    setLoading(true)
     profileRequest().then(data => {
       setEstablishment(data);
+      setLoading(false);
     });
   }, []);
 
@@ -61,7 +65,13 @@ export default function Profile(): React.ReactElement {
           <div style={{ fontSize: 16, fontWeight: 500, color: "gray" }}>{establishment.address}</div>
         </VStack>
       </HStack>
-      {establishment.tables.length == 0 && (
+      {loading ? (
+        <Center>
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" />
+          </svg>
+        </Center>
+      ) : establishment.tables.length == 0 && (
         <Center>
           <p>Pas de table, veuillez demander à votre administrateur de rajouter des tables.</p>
         </Center>
