@@ -1,5 +1,6 @@
 // controller for order
 const mongoose = require("mongoose");
+const { io } = require("..");
 const { OrderModel } = require('../models');
 const { ORDER_STATUS } = require("../models/type");
 const { SYMFONY_API_URL } = process.env;
@@ -58,6 +59,7 @@ module.exports = {
                 totalPrice: menusTotal + supplementsTotal,
             });
             await order.save();
+            io.emit(`establishment-${establishment}_order-added`, order);
             res.status(201).json(order);
         } catch (err) {
             res.status(500).json({ message: err.message });

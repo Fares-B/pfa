@@ -54,9 +54,9 @@ const Cart: React.FC = () => {
       menus: items,
       ...resto,
     });
-    console.log("fetched data", );
     dispatch(HistoryActions.addOrder(order));
     dispatch(AccountActions.setLoading(false));
+    dispatch(CartActions.resetState());
     Toast.show({
       placement: "top",
       render: () => (
@@ -65,6 +65,7 @@ const Cart: React.FC = () => {
         </Box>
       )
     });
+
   }
 
   if(items.length === 0) {

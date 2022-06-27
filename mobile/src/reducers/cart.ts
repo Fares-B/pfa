@@ -4,6 +4,7 @@ import { MenuProps } from '@app/globals/types'
 
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
+    resetState: null,
     addMenu: ["menu"],
     removeMenu: ["timestamp"],
 })
@@ -22,6 +23,8 @@ export const INITIAL_STATE = Immutable<CartProps>({
 })
 
 /* ------------- Reducers ------------- */
+export const resetState = (state: CartProps) => INITIAL_STATE;
+
 export const addMenu = (state: CartProps, action: { menu: MenuProps }) => {
     return Immutable.setIn(state, ['menus'], [...state.menus, action.menu]);
 }
@@ -33,6 +36,7 @@ export const removeMenu = (state: CartProps, action: { timestamp: number }) => {
 
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
+    [Types.RESET_STATE]: resetState,
     [Types.ADD_MENU]: addMenu,
     [Types.REMOVE_MENU]: removeMenu,
 });

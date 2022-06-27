@@ -8,6 +8,7 @@ export interface GridProps {
   children?: React.ReactNode;
   w?: string;
   h?: string;
+  rh?: number; // row height
 
   flex?: number | string;
 

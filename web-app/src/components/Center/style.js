@@ -4,8 +4,9 @@ const CenterStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${props => props.w || "100%"};
-  height: ${props => props.h || "100%"};
+
+  ${props => props.w ? "width: " + props.w + ";" : ""}
+  ${props => props.w ? "height: " + props.h + ";" : ""}
 
   padding: ${props => {
     return (props.pt || props.p || "0") + "px " +

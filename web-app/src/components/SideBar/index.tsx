@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import Center from "../Center";
 
 
-const SideBar = ({ routes }: SideBarProps): React.ReactElement => {
+const SideBar = ({ routes, establishment }: SideBarProps): React.ReactElement => {
   return (
     <VStack space={50} pl={10} pr={10} w="200px">
       
-      <Center>Mon site</Center>
+      <Center w="100%" mt={20}>
+        <div style={{ fontSize: 18, fontWeight: 700, color: "#a9a9a9" }}>{establishment ? establishment.name : ""}</div>
+      </Center>
 
       <VStack space={30}>
         {routes.map((route, index) => {

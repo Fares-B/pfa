@@ -124,7 +124,7 @@ const MenuDetails: React.FC<any> = ({ navigation, route }) => {
       </ScrollView>
 
       <Center>
-        <Button w="2/3" onPress={onSubmit}>
+        <Button w="2/3" onPress={onSubmit} bg="myprimary">
           <Text color="white" fontWeight={700} fontSize={16}>
             Ajouter au panier
           </Text>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const GridStyled = styled.div`
   display: grid;
   grid-template-columns: repeat(${props => props.cols || "1"}, 1fr);  
-  grid-auto-rows: minmax(100px, 250px);
+  grid-auto-rows: minmax(100px, ${props => props.rh || 350}px);
   grid-gap: ${props => props.space || "2"}px;
 
   ${props => props.flex ? "flex-grow: " + props.flex + ";" : ""}

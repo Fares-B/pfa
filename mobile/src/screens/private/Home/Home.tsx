@@ -50,7 +50,6 @@ const Home: React.FC<any> = ({ navigation }) => {
     })();
   }, [resto]);
 
-
   async function saveData(data: any) {
     await AsyncStorage.setItem("resto", JSON.stringify(data));
     dispatch(AccountActions.setEstablishment(data));
@@ -67,10 +66,10 @@ const Home: React.FC<any> = ({ navigation }) => {
   }
 
   async function onExit() {
+    onClose();
     await AsyncStorage.removeItem("resto");
     dispatch(AccountActions.setEstablishment(null));
-    CartActions.setCart(null);
-    onClose();
+    dispatch(CartActions.setCart(null));
   }
 
   if(resto == null) {

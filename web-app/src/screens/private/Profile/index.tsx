@@ -35,7 +35,6 @@ export default function Profile(): React.ReactElement {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    setLoading(true)
     profileRequest().then(data => {
       setEstablishment(data);
       setLoading(false);
@@ -66,7 +65,7 @@ export default function Profile(): React.ReactElement {
         </VStack>
       </HStack>
       {loading ? (
-        <Center>
+        <Center w="100%">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="45" />
           </svg>
@@ -76,18 +75,21 @@ export default function Profile(): React.ReactElement {
           <p>Pas de table, veuillez demander à votre administrateur de rajouter des tables.</p>
         </Center>
       )}
-     <Grid cols={5} space={60}>
-      {establishment.tables.map((table, key) => (
-        <Card key={key} w="100%">
-          <VStack space={20} w="100%" justifyContent="center" alignItems="center">
-            <div style={{ fontSize: 58, fontWeight: 600 }}>
-              {table.number}
-            </div>
-            <Button label="Générer QR code" onClick={() => generateQRCode(table)} />
-          </VStack>
-        </Card>
-      ))}
-     </Grid>
+    <VStack space={15}>
+      {!loading && <div>Liste des tables</div>}
+      <Grid cols={5} space={60} rh={200}>
+        {establishment.tables.map((table, key) => (
+          <Card key={key} w="100%">
+            <VStack space={20} w="100%" justifyContent="center" alignItems="center">
+              <div style={{ fontSize: 58, fontWeight: 600 }}>
+                {table.number}
+              </div>
+              <Button label="Générer QR code" onClick={() => generateQRCode(table)} />
+            </VStack>
+          </Card>
+        ))}
+        </Grid>
+      </VStack>
     </VStack>
   );
 }
