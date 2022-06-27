@@ -1,6 +1,6 @@
 
 export interface Resto {
-    id: number;
+    user: number;
     name: string;
     table: number;
 }

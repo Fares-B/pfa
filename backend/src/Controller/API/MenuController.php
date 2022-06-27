@@ -5,6 +5,7 @@ namespace App\Controller\API;
 use App\Entity\Menu;
 use App\Entity\Ingredient;
 use App\Entity\CategoryMenu;
+use App\Entity\CategoryIngredient;
 use App\Entity\Establishment;
 
 
@@ -31,6 +32,9 @@ class MenuController extends AbstractController
         if($data["api_key"] != "12345"){
             return new JsonResponse(['message' => 'Invalid api key'], 403);
         }
+        if(!isset($data["user"])){
+            return new JsonResponse(['message' => 'No user establishment id'], 403);
+        }
 
         // get user's category menus
         $repo = $manager->getRepository(CategoryMenu::class);
@@ -44,6 +48,21 @@ class MenuController extends AbstractController
         $ciIds = [];
         foreach ($categoryMenus as $categoryMenu) {
             array_push($ciIds, $categoryMenu->getId());
+        }
+
+        // get user's category ingredients for supplements
+        $supplements = []; 
+        $categoryIngredients = $manager->getRepository(CategoryIngredient::class)->findBy([ 'user' => $data['user'] ]);
+
+        foreach ($categoryIngredients as $categoryIngredient) {
+            foreach ($categoryIngredient->getIngredients() as $ingredient) {
+                array_push($supplements, [
+                    'id' => $ingredient->getId(),
+                    'name' => $ingredient->getName(),
+                    'isRemoved' => false,
+                    'price' => $ingredient->getPrice()
+                ]);
+            }
         }
 
         $menus = $manager->getRepository(Menu::class)->findMenus($ciIds);
@@ -68,11 +87,11 @@ class MenuController extends AbstractController
                     'name' => $menu->getCategory()->getName()
                 ],
                 'ingredients' => $ingredients,
-                'supplements' => []
+                'supplements' => [],
             ]);
         }
  
-        return new JsonResponse($menusSerialized);
+        return new JsonResponse(['menus' => $menusSerialized, 'supplements' => $supplements]);
     }
 
     /**

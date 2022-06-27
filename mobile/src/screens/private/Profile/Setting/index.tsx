@@ -5,8 +5,13 @@ import Link from "@app/components/Link";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faImage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import AccountActions from "@app/reducers/account";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Setting: React.FC<any> = ({ navigation, route, setToken }) => {
+
+const Setting: React.FC<any> = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const { user } = route.params;
   const { isOpen, onOpen, onClose } = useDisclose();
 
@@ -18,6 +23,11 @@ const Setting: React.FC<any> = ({ navigation, route, setToken }) => {
   function takePicture() {
     console.log("take picture")
     onClose();
+  }
+
+  async function onLogout() {
+    await AsyncStorage.removeItem("token");
+    dispatch(AccountActions.setToken(null));
   }
 
   return (
@@ -66,7 +76,7 @@ const Setting: React.FC<any> = ({ navigation, route, setToken }) => {
       
       <VStack space={4} pl={4}>
         <Text fontSize={16} fontWeight={700}>Autres options</Text>
-        <Link onNavigateTo={() => setToken(null)}>
+        <Link onNavigateTo={onLogout}>
           Déconnexion
         </Link>
       </VStack>

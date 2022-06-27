@@ -5,7 +5,7 @@ const MenuController = require("../../controllers/symfony/Menu");
 const router = new Router();
 
 
-router.get("/", MenuController.cget);
+router.get("/:id", MenuController.cget);
 
 router.get("/prices", MenuController.getPrices);
 

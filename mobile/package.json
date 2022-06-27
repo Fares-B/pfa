@@ -25,7 +25,11 @@
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.13.1",
-    "react-native-svg": "^12.3.0"
+    "react-native-svg": "^12.3.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
+    "reduxsauce": "^1.2.1",
+    "seamless-immutable": "^7.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

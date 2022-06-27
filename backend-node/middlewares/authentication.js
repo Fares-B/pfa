@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
       if (type !== "Bearer") throw new Error();
       const decoded = await verifyToken(token);
       req.user = decoded;
-      console.log("decoded", decoded);
       next();
     } catch (err) {
       res.sendStatus(401);

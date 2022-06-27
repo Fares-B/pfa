@@ -41,6 +41,13 @@ const theme = extendTheme({
     myprimary: "#2988E0", //blue
     mydanger: "#D60606", //red
     mygray: "#929191", //gray
+
+    status: {
+      new: "#4CD964",
+      inprogress: "#FFCA28",
+      completed: "#2988E0",
+      canceled: "#929191",
+    }
   },
 });
 

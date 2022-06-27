@@ -18,7 +18,7 @@ const MenuSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     ingredients: [IngredientSchema],
     supplements: [IngredientSchema],
-}, { _id: false });
+});
 
 const OrderSchema = mongoose.Schema({
     user: {

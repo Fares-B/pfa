@@ -3,16 +3,15 @@ const { SYMFONY_API_URL } = process.env;
 
 module.exports = {
     cget: async (req, res) => {
-        const { company = null } = req.query;
-        if (!company) return res.sendStatus(400);
-        console.log(process.env.SYMFONY_API_KEY);
+        const { id: user = null } = req.params;
+        if (!user) return res.sendStatus(400);
         try {
             const menu = await fetch(`${SYMFONY_API_URL}/menu`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         api_key: process.env.SYMFONY_API_KEY,
-                        company,
+                        user,
                     }),
                 })
                 .then(response => response.json())
@@ -23,19 +22,20 @@ module.exports = {
         }
     },
     getPrices: async (req, res) => {
-        const { company = null } = req.query;
-        if (!company) return res.sendStatus(400);
-        const menus = [1, 2];
-        const supplements = [1, 2, 1, 1, 2,2,1];
+        const { id: user = null } = req.params;
+        if (!user) return res.sendStatus(400);
+        // const menus = [1, 2];
+        // const supplements = [1, 2, 1, 1, 2,2,1];
         try {
             const menu = await fetch(`${SYMFONY_API_URL}/menu/prices`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         api_key: process.env.SYMFONY_API_KEY,
-                        company,
-                        menus: menus,
-                        supplements: supplements,
+                        user,
+                        ...req.body,
+                        // menus: menus,
+                        // supplements: supplements,
                     })
                 })
                 .then(response => response.json())

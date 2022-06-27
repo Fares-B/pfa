@@ -30,7 +30,11 @@ app.use(
   require("./middlewares/authentication"),
   require("./routes/Order")
 );
-
+app.use(
+  "/menus",
+  require("./middlewares/authentication"),
+  require("./routes/symfony/Menu")
+);
 
 // ESTABLISHMENT
 app.use("/establishment", function (req, res, next) {

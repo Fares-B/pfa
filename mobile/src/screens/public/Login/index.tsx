@@ -5,12 +5,16 @@ import C from "@app/components";
 import { Errors, ErrorsMessages } from "./type";
 import { loginRequest } from "@app/globals/fetch";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import AccountActions from "@app/reducers/account";
+
 
 const ERRORS_MESSAGES: ErrorsMessages = {
   login: "Email ou mot de passe incorrect",
 };
 
-const Login: React.FC<any> = ({ navigation, setToken }) => {
+const Login: React.FC<any> = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({ email: "", password: ""});
   const [errors, setErrors] = useState<Errors>({ login: false });
 
@@ -29,7 +33,7 @@ const Login: React.FC<any> = ({ navigation, setToken }) => {
     loginRequest({ email: form.email, password: form.password }).then( ({ token = null, message = null }) => {
       if(message) addRemoveErrors("login", true);
       else if (token) AsyncStorage.setItem("token", token, () => {
-        setToken(token);
+        dispatch(AccountActions.setToken(token));
       });
     });
   }

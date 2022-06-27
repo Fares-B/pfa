@@ -2,7 +2,7 @@ const ORDER_STATUS = {
     NEW: "new",
     IN_PROGRESS: "inprogress",
     COMPLETED: "completed",
-    CANCELLED: "cancelled",
+    CANCELED: "canceled",
 };
 
 const USER_TYPE = {

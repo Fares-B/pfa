@@ -4,37 +4,25 @@ import { convertNumberToPrice } from "@app/globals/functions";
 import { faOutdent } from "@fortawesome/free-solid-svg-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Box, Button, HStack, Modal, Pressable, ScrollView, Text, useDisclose, VStack } from "native-base";
+import { Button, HStack, Image, Modal, Pressable, ScrollView, Text, useDisclose, VStack } from "native-base";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import ScanQRCode from "./ScanQRCode";
-import { Resto } from "./type";
+import { useDispatch, useSelector } from "react-redux";
+import AccountActions from "@app/reducers/account";
+import { getMenusRequest } from "@app/globals/fetch";
+import { RestoProps } from "@app/globals/types";
+import CartActions from "@app/reducers/cart";
 
-
-const menus = [
-  {
-    name: "Rissoto",
-    price: 900,
-    ingredients: [
-      { 
-        name: "Safran",
-        price: 275,
-        isRemoved: false
-      },
-      { 
-        name: "Sauce test",
-        price: 100,
-        isRemoved: false
-      },
-    ],
-    supplements: [],
-  },
-  { name: "Rissoto Vert", img: "", price: 1000 },
-  { name: "Pizza Marguarita", img: "", price: 1100 },
-]
 
 const Home: React.FC<any> = ({ navigation }) => {
-  const [resto, setResto] = useState<Resto|null>(null);
+  const dispatch = useDispatch();
+  const resto = useSelector((state: any) => state.account.establishment);
+  const [menus, setMenus] = useState<RestoProps>({
+    resto: resto,
+    supplements: [],
+    menus: [],
+  });
   const {isOpen, onClose, onOpen} = useDisclose();
   
   useEffect(() => {
@@ -42,25 +30,52 @@ const Home: React.FC<any> = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if(resto !== null) {
-      console.log("fetch data menu's");
-    }
+    (async function() {
+      if (resto !== null) {
+        dispatch(AccountActions.setLoading(true));
+        try {
+          const data = await getMenusRequest(resto.user)
+          if(data.hasOwnProperty("menus") && data.hasOwnProperty("supplements")) {
+            setMenus(current => ({
+              ...current,
+              menus: data.menus,
+              supplements: data.supplements,
+            }));
+          }
+        } catch (error) {
+          console.log("error", error);          
+        }
+        dispatch(AccountActions.setLoading(false));
+      }
+    })();
   }, [resto]);
 
+
+  async function saveData(data: any) {
+    await AsyncStorage.setItem("resto", JSON.stringify(data));
+    dispatch(AccountActions.setEstablishment(data));
+  }
+
   async function retreiveData() {
-    const data: any = await AsyncStorage.getItem("resto");
-    setResto(JSON.parse(data));
+    if(resto === null) {
+      const data: any = await AsyncStorage.getItem("resto");
+      if(data !== null) {
+        const r = JSON.parse(data);
+        dispatch(AccountActions.setEstablishment(r));
+      }
+    }
   }
 
   async function onExit() {
     await AsyncStorage.removeItem("resto");
-    setResto(null);
+    dispatch(AccountActions.setEstablishment(null));
+    CartActions.setCart(null);
     onClose();
   }
 
   if(resto == null) {
     return (
-     <ScanQRCode setNewResto={setResto} />
+     <ScanQRCode saveData={saveData} />
     );
   }
 
@@ -79,14 +94,15 @@ const Home: React.FC<any> = ({ navigation }) => {
       <ScrollView>
         <Text fontSize={22} fontWeight={700}>Menu</Text>
         <VStack space={4} mt={4}>
-          {menus.map((menu, key) => (
-            <TouchableOpacity key={key} onPress={() => navigation.navigate("MenuDetails", { resto, menu })}>
+          {menus.menus.map((menu, key) => (
+            <TouchableOpacity key={key} onPress={() => navigation.navigate("MenuDetails", { resto, menu, supplements: menus.supplements })}>
               <HStack space={4}>
                 <VStack flex={1} justifyContent="space-between">
                   <Text fontSize={16} fontWeight={600}>{menu.name}</Text>
                   <Text fontSize={16} fontWeight={600}>{convertNumberToPrice(menu.price)}</Text>
                 </VStack>
-                <Box bg="mygray" size={60} rounded={2} />
+                <Image src={"https://loremflickr.com/320/320/food?lock=" + menu.id} alt={menu.name} size={60} />
+                {/* <Box bg="mygray" size={60} rounded={2} /> */}
               </HStack>
             </TouchableOpacity>
           ))}

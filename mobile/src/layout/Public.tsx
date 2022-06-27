@@ -5,21 +5,19 @@ import Public from "@app/screens/public";
 
 const Stack = createNativeStackNavigator();
 
-interface PublicLayoutProps {
-  setToken: (token: string|null) => void;
-}
+interface PublicLayoutProps {};
 
-const PublicLayout: React.FC<PublicLayoutProps> = ({ setToken }) => {
+const PublicLayout: React.FC<PublicLayoutProps> = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName="Login"
     >
-      <Stack.Screen name="Login">{props => <Public.Login setToken={setToken} {...props} />}</Stack.Screen>
-      <Stack.Screen name="Signup">{props => <Public.Signup setToken={setToken} {...props} />}</Stack.Screen>
+      <Stack.Screen name="Login" component={Public.Login} />
+      <Stack.Screen name="Signup" component={Public.Signup} />
       <Stack.Screen name="Forgot" component={Public.Forgot} />
     </Stack.Navigator>
   );
-};
+}
 
 export default PublicLayout;

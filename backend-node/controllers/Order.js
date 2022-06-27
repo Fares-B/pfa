@@ -7,19 +7,16 @@ const { SYMFONY_API_URL } = process.env;
 module.exports = {
     cget: async (req, res) => {
         try {
-            const orders = await OrderModel.find({ ...req.body, deleted: false });
+            const orders = await OrderModel.find({ ...req.body, deleted: false }).sort({ createdAt: -1 });
             res.json(orders);
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
     },
     post: async (req, res) => {
-        const {menus: menusParams} = req.body;
+        const {menus: menusParams, user, establishment, table} = req.body;
+        if (!user || !establishment || !table) return res.sendStatus(400);
 
-        const { user = null, company = null, table = null } = req.query;
-        console.log(req.query);        
-        if (!user || !company || !table) return res.sendStatus(400);
-        console.log("passed");
         let supplements = [];
         let menus = [];
         for (const m of menusParams) {
@@ -50,12 +47,11 @@ module.exports = {
             for (const s of menu.supplements) {
                 supplementsTotal += (s.price * supplements.filter(i => i === s.id).length);
             }
-
             const order = new OrderModel({
-                user: req.user.id,
                 ...req.body,
+                user: req.user.id,
                 company: {
-                    establishment: company,
+                    establishment,
                     user,
                     table,
                 },
@@ -102,14 +98,14 @@ module.exports = {
         try {
             let order = await OrderModel.findOne({
                 _id: mongoose.Types.ObjectId(req.params.id),
+                user: req.user.id,
                 status: ORDER_STATUS.NEW,
                 deleted: false,
             });
-            if (!order) return res.sendStatus(404);
-            if (req.user.id !== order.user.toString()) return res.sendStatus(403);
-            order.deleted = true;
+            if (!order) return res.sendStatus(403);
+            order.status = ORDER_STATUS.CANCELED;
             await order.save();
-            res.status(204).end();
+            res.json({ order });
         } catch (err) {
             res.status(500).json({ message: err.message });
         }

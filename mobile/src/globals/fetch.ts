@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { HistoryProps, MenuProps } from "./types";
 
 interface LoginProps {
     email: string;
@@ -15,16 +16,17 @@ interface RegisterProps {
 
 interface UpdateStatusProps {};
 
-type medthodType = "PUT"|"POST"|"GET";
+type medthodType = "PUT"|"POST"|"GET"|"DELETE";
 
 interface OptionsProps {
     method: medthodType;
     headers: string[][] | Record<string, string> | Headers| any;
     body?: string;
 }
-
+const DEFAULT_URL = "https://b1dd-2a01-e0a-8f9-7e80-7d0c-c9f6-f4e8-6ca5.eu.ngrok.io";
 const query = async (path: string, method: medthodType, body: any = null): Promise<any> => {
-    path = process.env.BACKEND_BASE_URL || "http://192.168.1.39:5000" +  path;
+    // @ts-ignore
+    path = process.env.BACKEND_BASE_URL || DEFAULT_URL +  path;
     console.log(path);
     const token = await AsyncStorage.getItem("token");
     const options: OptionsProps = {
@@ -32,6 +34,7 @@ const query = async (path: string, method: medthodType, body: any = null): Promi
         headers: {
             "Content-Type": "application/json",
             Authorization: "",
+            "ngrok-skip-browser-warning": "true",
         },
     };
     if(token) options.headers.Authorization = "Bearer " + token;
@@ -41,7 +44,7 @@ const query = async (path: string, method: medthodType, body: any = null): Promi
         const data = await res.json();
         return data;
     } catch (err) {
-        return console.log(err);
+        return err;
     }
 }
 
@@ -51,8 +54,13 @@ export const loginRequest = async (body: LoginProps) => query("/login", "POST", 
 export const registerRequest = async (body: RegisterProps) => query("/register", "POST", body);
 
 // PRIVATE
-// export const updateStatusRequest = async (id: string) => query("/menus/next-status/" + id, "PUT");
+//get all menus of a restaurant
+export const getMenusRequest = async (userId: string) => query(`/menus/${userId}`, "GET");
 
-// export const allOrdersRequest = async () => query("/menus", "GET")
+export const postMenuRequest = async (body: any) => query("/orders", "POST", body);
+
+export const getHistoryOrdersRequest = async () => query(`/orders`, "GET");
+
+export const cancelOrderRequest = async (orderId: string) => query(`/orders/${orderId}`, "DELETE");
 
 export default query;

@@ -1,40 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Center, Modal, NativeBaseProvider, Spinner, Stack, View } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import PrivateLayout from "./Private";
 import PublicLayout from "./Public";
 import theme from "@app/assets/nativeBaseTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useDispatch, useSelector } from 'react-redux';
+import AccountActions from "@app/reducers/account";
 
 
 const Layout: React.FC = () => {
-  const [token, setToken] = useState<string|null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const token = useSelector((state: any) => state.account.token);
+  const loading = useSelector((state: any) => state.account.action.loading);
 
   useEffect(() => {
     AsyncStorage.getItem("token").then(t => {
-      setToken(t);
-      setIsLoading(false);
+      dispatch(AccountActions.setToken(t));
     });
   }, []);
 
-  // async function updatetoken(token: string|null) {
-  //   setIsLoading(true);
-  //   if(token) AsyncStorage.setItem("token", token, () => {
-  //     setToken(token);
-  //     setIsLoading(false)
-  //   });
-  //   else AsyncStorage.removeItem("token", () => setIsLoading(false));
-  // }
 
   return (
     <NativeBaseProvider theme={theme}>
       <NavigationContainer>
         <Stack flex={1} bg="white" safeAreaTop={true}>
-          {token ? <PrivateLayout setToken={setToken} /> : <PublicLayout setToken={setToken} />}
+          {token ? <PrivateLayout /> : <PublicLayout />}
         </Stack>
-        <Modal isOpen={isLoading}>
+        <Modal isOpen={loading}>
           <Center>
             <Spinner size={48} />
           </Center>

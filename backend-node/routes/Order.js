@@ -6,7 +6,7 @@ const { authorization } = require("../middlewares");
 const router = new Router();
 
 
-router.get("/", authorization({ role: 'admin', owner: true }), OrderController.cget);
+router.get("/", OrderController.cget);
 
 router.post("/", OrderController.post);
 
