@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCreditCard, faGear, faHistory } from "@fortawesome/free-solid-svg-icons";
 import { HStack, Pressable, Text, VStack } from "native-base";
+import { useSelector } from "react-redux";
+import { capitalize } from "@app/globals/functions";
 
 const routes = [
   { title: "Commandes", name: "Order", icon: faHistory },
@@ -18,20 +20,15 @@ interface User {
 };
 
 const UserProfile: React.FC<any> = ({ navigation }) => {
-  const user: User = {
-    firstname: "Fares",
-    lastname: "Tac",
-    email: "fares@tac.fr",
-    avatar: null,
-  };
-
+  const user = useSelector((state: any) => state.account.user);
+console.log("user profile", user);
   return (
     <VStack flex={1} space={24} px={4} pt={8}>
       <VStack alignItems="center" space={4}>
         {user.avatar ? null : (
           <FontAwesomeIcon icon={faUser} size={60} />
         )}
-        <Text>{user.firstname + " " + user.lastname}</Text>
+        <Text fontSize={18} fontWeight={600}>{user && `${capitalize(user.firstName)} ${capitalize(user.lastName)}`}</Text>
       </VStack>
       <VStack space={6}>
         {routes.map(item => (

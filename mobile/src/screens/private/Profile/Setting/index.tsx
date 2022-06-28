@@ -5,14 +5,14 @@ import Link from "@app/components/Link";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faImage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AccountActions from "@app/reducers/account";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-const Setting: React.FC<any> = ({ navigation, route }) => {
+const Setting: React.FC<any> = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { user } = route.params;
+  const user = useSelector((state: any) => state.account.user);
   const { isOpen, onOpen, onClose } = useDisclose();
 
   function pickPicture() {
@@ -38,17 +38,17 @@ const Setting: React.FC<any> = ({ navigation, route }) => {
         <Text fontSize={16} fontWeight={700}>Modifier le compte</Text>
         <HStack justifyContent="space-between">
           <VStack space={4} flex={1}>
-            <Pressable onPress={() => navigation.navigate("EditProfile", { change: "firstname" })}>
+            <Pressable onPress={() => navigation.navigate("EditProfile", { change: "firstName", value: user.firstName })}>
               <VStack space={1}>
                 <Text color="mygray">Prénom</Text>
-                <Text>{user.firstname}</Text>
+                <Text>{user.firstName}</Text>
               </VStack>
             </Pressable>
 
-            <Pressable onPress={() => navigation.navigate("EditProfile", { change: "lastname" })}>
+            <Pressable onPress={() => navigation.navigate("EditProfile", { change: "lastName", value: user.lastName })}>
               <VStack space={1}>
                 <Text color="mygray">Nom</Text>
-                <Text>{user.lastname}</Text>
+                <Text>{user.lastName}</Text>
               </VStack>
             </Pressable>
           </VStack>
@@ -66,7 +66,7 @@ const Setting: React.FC<any> = ({ navigation, route }) => {
           <Text color="mygray">{user.email}</Text>
         </VStack>
 
-        <Pressable onPress={() => navigation.navigate("EditProfile", { change: "password" })}>
+        <Pressable onPress={() => navigation.navigate("EditProfile", { change: "password", value: "" })}>
           <VStack space={1}>
             <Text color="mygray">Mot de passe</Text>
             <Text>{"******"}</Text>

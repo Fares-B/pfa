@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
       const [type, token] = auth.split(/\s+/);
       if (type !== "Bearer") throw new Error();
       const decoded = await verifyToken(token);
+      console.log("decoded", decoded);
       req.user = decoded;
       next();
     } catch (err) {

@@ -5,13 +5,13 @@ const { authorization } = require("../middlewares");
 const router = new Router();
 
 
-router.get("/", authorization({ role : 'admin' }), UserController.cget);
+router.get("/all", authorization({ role : 'admin' }), UserController.cget);
 
 router.post("/", UserController.post);
 
-router.get("/:id", UserController.get);
+router.get("/", UserController.get);
 
-router.put("/:id", authorization({ role : 'admin' }), UserController.put);
+router.put("/", UserController.put);
 
 router.delete("/:id", UserController.delete);
 

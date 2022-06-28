@@ -25,11 +25,21 @@ module.exports = {
   get: async (req, res) => {
     try {
       const user = await UserModel.findOne({
-        _id: mongoose.Types.ObjectId(req.params.id),
+        _id: mongoose.Types.ObjectId(req.user.id),
         userType: req.user.userType,
         deleted: false,
       });
-      res.json(user);
+      if(!user) {
+        return res.status(403).json({ message: "User not found" });
+      }
+      res.json({
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -41,14 +51,27 @@ module.exports = {
       if(req.body.password) { isUpdatePassword = true };
 
       let user = await UserModel.findOne({
-        _id: mongoose.Types.ObjectId(req.params.id),
+        _id: mongoose.Types.ObjectId(req.user.id),
         userType: req.user.userType,
         deleted: false,
       });
+
       if(user === null) throw new Error('User not found');
-      user._doc = { ...user._doc, ...req.body };
+      if(req.body.firstName) user.firstName = req.body.firstName;
+      if(req.body.lastName) user.lastName = req.body.lastName;
+      if(req.body.password) user.password = req.body.password;
+
       await user.save( { newPassword: isUpdatePassword } );
-      res.json(user);
+      res.json({
+        user: {
+          _id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        }
+      });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

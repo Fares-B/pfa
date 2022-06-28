@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { OrderModel } = require('../models');
 const { ORDER_STATUS } = require("../models/type");
+const { io } = require("..");
 
 function nextStatus(status) {
     switch (status) {
@@ -52,6 +53,7 @@ module.exports = {
 
             order.status = status;
             await order.save();
+            io.emit(order.user + "_order-status-updated", order);
             res.json(order);
         } catch (err) {
             res.status(500).json({ message: err.message });

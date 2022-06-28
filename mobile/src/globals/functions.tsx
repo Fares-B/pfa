@@ -7,3 +7,7 @@ export function formatDate(date:string|number): string {
   const months = ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jui', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc']
   return d.getDate() + "-" + months[d.getMonth()] + "-" + d.getFullYear()
 }
+
+export function capitalize(str:string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

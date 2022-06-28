@@ -7,6 +7,7 @@ const { Types, Creators } = createActions({
     addOrder: ["order"],
     setOrders: ["orders"],
     cancelOrder: ["order"],
+    updateOrder: ["order"],
 })
 
 export const HistoryTypes = Types;
@@ -31,7 +32,15 @@ export const setOrders = (state: HistoryState, action: { orders: HistoryProps[] 
     return Immutable.setIn(state, ['orders'], action.orders);
 }
 
-export const cancelOrder = (state: HistoryState, action: { order: MenuProps }) => {
+export const cancelOrder = (state: HistoryState, action: { order: HistoryProps }) => {
+    const orders = state.orders.map(o => {
+        if (o._id !== action.order._id) return o;
+        return action.order;
+    });
+    return Immutable.setIn(state, ['orders'], orders);
+}
+
+export const updateOrder = (state: HistoryState, action: { order: HistoryProps }) => {
     const orders = state.orders.map(o => {
         if (o._id !== action.order._id) return o;
         return action.order;
@@ -44,4 +53,5 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.ADD_ORDER]: addOrder,
     [Types.SET_ORDERS]: setOrders,
     [Types.CANCEL_ORDER]: cancelOrder,
+    [Types.UPDATE_ORDER]: updateOrder,
 });

@@ -4,10 +4,10 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
     getUserProfileRequest: null,
-    getUserProfileRequestSuccess: ["user"],
-    getUserProfileRequestFailure: ["error"],
+    getUserProfileSuccess: ["user"],
+    getUserProfileFailure: ["error"],
 
-    updateProfileRequest: ["user", "callback"],
+    updateProfileRequest: ["callback"],
     updateProfileFailure: ["error"],
     updateProfileSuccess: ["user"],
     
@@ -37,12 +37,13 @@ export const getUserProfileRequest = (state: any, action: any) => {
     return Immutable.setIn(nextSate, ["action", 'error'], "")
 }
 
-export const getUserProfileRequestFailure = (state: any, action: { error: any }) => {
+
+export const getUserProfileFailure = (state: any, action: { error: any }) => {
     let nextSate = Immutable.setIn(state, ["action", 'loading'], false)
     return Immutable.setIn(nextSate, ["action", 'error'], action.error)
 }
 
-export const getUserProfileRequestSuccess = (state: any, action: { user: any }) => {
+export const getUserProfileSuccess = (state: any, action: { user: any }) => {
     let nextSate = Immutable.setIn(state, ["action", 'loading'], false)
     return Immutable.setIn(nextSate, ['user'], action.user)
 }
@@ -59,8 +60,8 @@ export const updateProfileFailure = (state: any, action: { error: any }) => {
 }
 
 export const updateProfileSuccess = (state: any, action: any) => {
-    return Immutable.setIn(state, ["action", 'loading'], false);
-    // return Immutable.setIn(nextSate, ['user'], action.user)
+    const nextSate = Immutable.setIn(state, ["action", 'loading'], false);
+    return Immutable.setIn(nextSate, ['user'], action.user)
 }
 
 // establish connection with the server
@@ -79,8 +80,8 @@ export const setLoading = (state: any, action: { loading: boolean }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_USER_PROFILE_REQUEST]: getUserProfileRequest,
-    [Types.GET_USER_PROFILE_REQUEST_FAILURE]: getUserProfileRequestFailure,
-    [Types.GET_USER_PROFILE_REQUEST_SUCCESS]: getUserProfileRequestSuccess,
+    [Types.GET_USER_PROFILE_FAILURE]: getUserProfileFailure,
+    [Types.GET_USER_PROFILE_SUCCESS]: getUserProfileSuccess,
 
     [Types.UPDATE_PROFILE_REQUEST]: updateProfileRequest,
     [Types.UPDATE_PROFILE_SUCCESS]: updateProfileSuccess,

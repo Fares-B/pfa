@@ -3,6 +3,9 @@ import { Platform } from "react-native";
 import { Box, Button, KeyboardAvoidingView, Text, Toast, VStack } from "native-base";
 import C from "@app/components";
 import Header from "@app/components/Header";
+import { useDispatch } from "react-redux";
+import AccountActions from "@app/reducers/account";
+import { updateProfileRequest } from "@app/globals/fetch";
 
 const ERRORS_MESSAGES = {
   passwordNotSame: "Le mot de passe n'est pas identique",
@@ -10,13 +13,14 @@ const ERRORS_MESSAGES = {
 };
 
 const TITLES: {[key: string]: string} = {
-  firstname: "Prénom",
-  lastname: "Nom",
+  firstName: "Prénom",
+  lastName: "Nom",
 }
 
 const NewPassword: React.FC<any> = ({ navigation, route }) => {
-  const { change } = route.params;
-  const [value, setValue] = useState<string>("");
+  const dispatch = useDispatch();
+  const { change, value: initialValue } = route.params;
+  const [value, setValue] = useState<string>(initialValue);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [errors, setErrors] = useState({ passwordNotSame: false });
 
@@ -42,24 +46,19 @@ const NewPassword: React.FC<any> = ({ navigation, route }) => {
         )
       })
     }
-    switch (change) {
-      case "password":
-        const isNotSame = value !== confirmPassword;
-        addRemoveErrors("passwordNotSame", isNotSame);
-        console.log("change password with", value);
-        callback(!isNotSame, ERRORS_MESSAGES.passwordNotSame);
-        break;
-      case "firstname":
-        console.log("change firstname with", value);
-        callback(true, ERRORS_MESSAGES.errorWhenApply);
-        break;
-      case "lastname":
-        callback(false, ERRORS_MESSAGES.errorWhenApply);
-        break;
-      default:
-        console.log("error cannot do this operation");
-        break;
+    if(change === "password") {
+      const isNotSame = value !== confirmPassword;
+      if(isNotSame) {
+        addRemoveErrors("passwordNotSame", true);
+        callback(!isNotSame, ERRORS_MESSAGES.passwordNotSame)
+        return;
+      };
     }
+    dispatch(AccountActions.updateProfileRequest());
+    updateProfileRequest({ [change]: value }).then(({ user: u }) => {
+      if(!u) return callback(false, ERRORS_MESSAGES.errorWhenApply);
+      dispatch(AccountActions.updateProfileSuccess(u));
+    });
   }
 
 

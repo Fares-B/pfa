@@ -23,7 +23,7 @@ interface OptionsProps {
     headers: string[][] | Record<string, string> | Headers| any;
     body?: string;
 }
-const DEFAULT_URL = "https://b1dd-2a01-e0a-8f9-7e80-7d0c-c9f6-f4e8-6ca5.eu.ngrok.io";
+export const DEFAULT_URL = "https://b1dd-2a01-e0a-8f9-7e80-7d0c-c9f6-f4e8-6ca5.eu.ngrok.io";
 const query = async (path: string, method: medthodType, body: any = null): Promise<any> => {
     // @ts-ignore
     path = process.env.BACKEND_BASE_URL || DEFAULT_URL +  path;
@@ -39,6 +39,7 @@ const query = async (path: string, method: medthodType, body: any = null): Promi
     };
     if(token) options.headers.Authorization = "Bearer " + token;
     if(body) options.body = JSON.stringify(body);
+    console.log("body", options.body);
     try {
         const res = await fetch(path, options);
         const data = await res.json();
@@ -55,6 +56,10 @@ export const registerRequest = async (body: RegisterProps) => query("/register",
 
 // PRIVATE
 //get all menus of a restaurant
+export const getProfileRequest = async () => query("/users/", "GET");
+
+export const updateProfileRequest = async (body: any) => query("/users/", "PUT", body);
+
 export const getMenusRequest = async (userId: string) => query(`/menus/${userId}`, "GET");
 
 export const postMenuRequest = async (body: any) => query("/orders", "POST", body);
